@@ -14,13 +14,15 @@ const productSchema = new Schema({
     type: Number,
     required: true,
   },
+  // linkage between the products and categories (Similar to SQL foreign key)
   category: {
-    type: String,
-    required: true,
+    type: Schema.Types.ObjectId,
+    ref: "Category",
   },
+  image: String,
 });
 
 // convert the schema to a model
 const Product = model("Product", productSchema);
 
-module.exports = Product; // equal to "export default Product" in React
+module.exports = Product;

@@ -1,3 +1,4 @@
+require("dotenv").config();
 // import express
 const express = require("express");
 const mongoose = require("mongoose");
@@ -10,7 +11,9 @@ const app = express();
 app.use(express.json());
 
 // setup cors policy
-app.use(cors())
+app.use(cors());
+
+
 
 // connect to MongoDB
 mongoose
@@ -29,15 +32,19 @@ app.get("/", (req, res) => {
 });
 
 // import all the routes
-const productRouter = require("./routes/product");
-const categoriesRouter = require("./routes/categories");
+const productRoutes = require("./routes/product");
 
+app.use("/api/products", productRoutes);
+app.use("/api/categories", require("./routes/category"));
+app.use("/api/orders", require("./routes/order"));
+app.use("/api/payment", require("./routes/payment"));
+app.use("/api/auth", require("./routes/user"));
+app.use("/api/image", require("./routes/image"));
 
-app.use("/products", productRouter);
-app.use("/categories", categoriesRouter);
+// set a folder as a static path
+app.use("/api/uploads", express.static("uploads"));
 
 // start the server
 app.listen(5555, () => {
-    console.log("Server is running at http://localhost:5555");
-  });
-  
+  console.log("Server is running at http://localhost:5555");
+});
