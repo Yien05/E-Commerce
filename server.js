@@ -17,7 +17,7 @@ app.use(cors());
 
 // connect to MongoDB
 mongoose
-  .connect("mongodb://localhost:27017/online_store")
+  .connect(process.env.MONGODB_URL+"/online_store")
   .then(() => {
     // if mongodb is successfully connected
     console.log("MongoDB is connected");
