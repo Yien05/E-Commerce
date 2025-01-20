@@ -3,8 +3,12 @@ const axios = require("axios");
 const Order = require("../models/order");
 
 // get all the orders
-const getOrders = async () => {
-  return await Order.find().sort({ _id: -1 });
+const getOrders = async (email, role) => {
+  let filter = {};
+  if (role !== "admin") {
+    filter.customerEmail = email;
+  }
+  return await Order.find(filter).sort({ _id: -1 });
 };
 
 // get on order
@@ -30,8 +34,8 @@ const addNewOrder = async (
       email: customerEmail,
       amount: parseFloat(totalPrice) * 100, // parseFloat will convert string to float number
 
-      callback_url: process.env.FRONTEND_URL+ "/verify-payment",
-      redirect_url: process.env.FRONTEND_URL+ "/verify-payment",
+      callback_url: process.env.FRONTEND_URL + "/verify-payment",
+      redirect_url: process.env.FRONTEND_URL + "/verify-payment",
     },
     {
       auth: {
